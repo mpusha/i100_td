@@ -20,7 +20,7 @@
 #define STATUS_ERROR         "geterrorint"
 
 //............................GET_REQUEST...................................................
-#define GETERROR_REQUEST     "GETERRORO"
+#define GETERROR_REQUEST     "GETERROR"
 #define GETERROR_STR         "geterrorstr"
 
 //............................CONNECT_REQUEST...................................................

@@ -132,7 +132,6 @@ void TTDBehav::run()
         map_MeasureStatus.clear();
         map_MeasureStatus[STATUS_PROGRESS]=device->readMeasSts();
         map_MeasureStatus[STATUS_ERROR]=device->readMeasErrorInt();
-
         sendToClient(pClient, STATUS_REQUEST);
         phase=IDLE;
         break;
@@ -153,13 +152,10 @@ void TTDBehav::run()
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Public slots
-// Forming request for get data
-// return 0 if all OK
+// get endMeasure signal from THw obect
 void TTDBehav::endMeasure(void)
 {
-  //if(phase!=IDLE) return(1);
   allStates[END_MEASURE_STATE]=END_MEASURE_STATE;
-  //return(0);
 }
 
 //================= NETWORK =========================================================================================================================
@@ -179,8 +175,6 @@ void TTDBehav::slotNewConnection()
            );
     connect(pClientSocket, SIGNAL(error(QAbstractSocket::SocketError)),
                     this,     SLOT(slotError(QAbstractSocket::SocketError)));
-
-
 
     qDebug()<<"Get request on connection from remote host wit IP: "<<pClientSocket->peerAddress().toString();
     if(clientConnected) {
@@ -277,7 +271,7 @@ void TTDBehav::sendToClient(QTcpSocket *pSocket, QString request)
   if(request ==CONNECT_REQUEST) out << map_ConnectedStatus;
 
 //_2. STATUS_REQUEST
-  if(request == STATUS_REQUEST) { out << map_ConnectedStatus;  }
+  if(request == STATUS_REQUEST) { out << map_MeasureStatus;  }
 
 //_3. GETERROR_REQUEST
   if(request == GETERROR_REQUEST) out << map_ErrorStr;

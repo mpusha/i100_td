@@ -137,13 +137,15 @@ int THw::measure(void)
   do {
     if(rcam16(cr,sync_N,0,0,&ds)) { err="Module of synchr is absent" ; return 3; } // module of synchr error
     if((ds==1)&&(newc==0)){
-      qDebug()<<"Find interrupt from pulse 1. Prepere ADCs.";
+      qDebug()<<"Find first interrupt from pulse 1. Prepere ADCs.";
+      sleep(1);
       newc=1;
+      ds=0;
       // clear ADCs and get enable ADC's map
       clearAdc();
     }
-    if((ds==2)&&(newc==1)) {
-    qDebug()<<"Find interrupt from pulse 2.";
+    if((ds==1)&&(newc==1)) {
+    qDebug()<<"Find second interrupt from pulse 1.";
     sleep(1);
     qDebug()<<"Converting was compleated. Reading data From ADCs.";
     // can read data from ADC's
@@ -159,7 +161,7 @@ int THw::measure(void)
     return 0; // all meas OK
     }
     time(&now);
-  } while((now-bmeas)<11);
+  } while((now-bmeas)<21);
   err="Timeout operation on bus of SUMMA.";
   return 4; // timeout
 }
